@@ -23,14 +23,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure--v+bytx-f=km$!f#3e1%$*_pk5%ma)_e^(e-55&no5qu43zwo#'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = []
 
 
 # Application definition
 
-INSTALLED_APPS = [
+DJANGO_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -38,6 +38,15 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 ]
+
+THIRD_PARTY_APPS = []
+
+USER_APPS = [
+    'catalog'
+]
+
+INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + INSTALLED_APPS
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
