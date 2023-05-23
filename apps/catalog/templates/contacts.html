@@ -12,7 +12,7 @@
 <body>
 <h1 class="display-4" style="color:Silver">Свяжитесь с нами</h1>
 <form action="" method="post" class="form-floating">
-    <!-- {% csrf_token %} Этот токен отображается как строка. Почему? Что делать?-->
+    {% csrf_token %} <!-- Этот токен отображается как строка. Почему? Что делать?-->
 	<div>
         <label for="name" style="color:Silver">ФИО</label>
         <input id="name" type="text" name="name" class="form-control" required>
