@@ -3,15 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <title>contacts</title>
+    <style>
+    body {
+        background: #c7b39b url(img/1614724672_72-p-foni-dlya-lendinga-82.jpg); /* Цвет фона и путь к файлу */
+        }
+    </style>
 </head>
 <body>
-<h1>Hi, Sky!!!</h1>
-<br>
-<form method="post">
-	<input type="text" name="name" /><br>
-	<input type="email" name="email" /><br>
-    <textarea name="message" ></textarea><br>
-    <input type="submit" value="Отправить" />
+<h1 class="display-4" style="color:Silver">Свяжитесь с нами</h1>
+<form action="" method="post" class="form-floating">
+    <!-- {% csrf_token %} Этот токен отображается как строка. Почему? Что делать?-->
+	<div>
+        <label for="name" style="color:Silver">ФИО</label>
+        <input id="name" type="text" name="name" class="form-control" required>
+    </div>
+    <div>
+        <label for="phone_number" style="color:Silver">Тел.</label>
+        <input id="phone_number" type="phone" name="phone_number" class="form-control" required>
+    </div>
+    <div>
+        <label for="email" style="color:Silver">E-mail</label>
+        <input id="email" type="email" name="email" class="form-control" required>
+    </div>
+    <div>
+        <label for="message" style="color:Silver">Вопрос</label>
+        <input id="message" type="text" name="message" class="form-control" required>
+    </div>
+    <button type="submit">Отправить</button>
 </form>
 </body>
 </html>
