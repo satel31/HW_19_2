@@ -1,8 +1,9 @@
 from django.urls import path
-from catalog.views import CHANGE_NAME
+from apps.catalog.views import homepage, contacts
 
-app_name = CHANGE_NAME
+app_name = 'catalog'
 
 urlpatterns = [
-    path('', CHANGE_NAME, namespace='CHANGE_NAME'),
+    path('', homepage),
+    path('contacts/', contacts)
 ]
