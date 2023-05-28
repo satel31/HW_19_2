@@ -31,5 +31,11 @@
     </div>
     <button type="submit">Отправить</button>
 </form>
+    <h1 class="display-4" style="color:Silver">Контактная информация:</h1>
+        <tbody>
+        {% for c in contact %}
+            <p style="color:Silver">{{ c.first_name }} {{ c.last_name }}, {{ c.phone }}, {{ c.email }}</p>
+        {% endfor %}
+        </tbody>
 </body>
 </html>

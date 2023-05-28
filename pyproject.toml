@@ -1,7 +1,7 @@
 [tool.poetry]
-name = "hw-19-2"
+name = "Django HW"
 version = "0.1.0"
-description = "HW 19.2 for SkyPro course"
+description = "HW for SkyPro course"
 authors = ["satel31 <blokhnina.tatiana@yandex.ru>"]
 readme = "README.md"
 packages = [{include = "hw_19_2"}]
@@ -11,6 +11,10 @@ python = "^3.11"
 
 
 [tool.poetry.group.dev.dependencies]
+psycopg = "^3.1.9"
+pillow = "^9.5.0"
+ipython = "^8.13.2"
+python-dotenv = "^1.0.0"
 django = "^4.2.1"
 
 [build-system]
