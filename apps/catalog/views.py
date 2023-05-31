@@ -21,9 +21,9 @@ def contacts(request):
             f.write(feedback_data)
             f.write('\n')
 
-        context = {'contact': []}
-        for contact in Contacts.objects.all():
-            context['contact'].append(
-                {'first_name': contact.first_name, 'last_name': contact.last_name, 'phone': contact.phone,
-                 'email': contact.email})
-    return render(request, 'contacts.html', context=context)
+    context = {'contact': []}
+    for contact in Contacts.objects.all():
+        context['contact'].append(
+             {'first_name': contact.first_name, 'last_name': contact.last_name, 'phone': contact.phone,
+              'email': contact.email})
+    return render(request, 'contacts.html', context)
