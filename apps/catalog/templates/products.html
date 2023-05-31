@@ -1,12 +1,15 @@
 {% extends 'base.html' %}
 
+{% load my_tags %}
+
 {% block content %}
     {% for object in objects_list %}
         <div class="col">
             <div class="card shadow-sm">
                 {% if object.preview %}
                     <img class="card-img-top"
-                         src="/media/{{ object.preview }}"
+                            {#  src="/media/{{ object.preview }}" #}
+                         src="{{ object.preview|mediapath }}"
                          alt="Card image cap">
                 {% endif %}
                 <div class="card-body">
