@@ -29,4 +29,9 @@ def contacts(request):
     return render(request, 'contacts.html', context)
 
 def products(request):
-    return render(request, 'products.html')
+    products_list = Product.objects.all()
+    context = {
+        'objects_list': products_list,
+        'title': 'Products'
+    }
+    return render(request, 'products.html', context)
