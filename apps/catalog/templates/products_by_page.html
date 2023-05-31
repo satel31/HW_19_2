@@ -3,7 +3,7 @@
 {% load my_tags %}
 
 {% block content %}
-    {% for object in objects_list %}
+    {% for object in object_list %}
         <div class="col">
             <div class="card shadow-sm">
                 {% if object.preview %}
@@ -25,4 +25,22 @@
             </div>
         </div>
     {% endfor %}
+
+    <nav class="pagenav my-15">
+        <div class="page-arrow page-arrow-prev">
+        {% if page_obj.has_previous %}
+            <a class="example1-pagination_link" href="?page=1">&laquo; 1</a>
+            <a class="example1-pagination_link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+        {% endif %}
+
+        <span class="example1-pagination_link example1-pagination_link__active">
+            Page {{ page_obj.number }} out {{ page_obj.paginator.num_pages }}.
+        </span>
+
+        {% if page_obj.has_next %}
+            <a class="example1-pagination_link" href="?page={{ page_obj.next_page_number }}">Next</a>
+            <a class="example1-pagination_link" href="?page={{ page_obj.paginator.num_pages }}">Last &raquo;</a>
+        {% endif %}
+        </div>
+    </nav>
 {% endblock %}

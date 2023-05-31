@@ -1,6 +1,7 @@
 from django.shortcuts import render
 import json
 from apps.catalog.models import Product, Contacts, Category
+from django.core.paginator import Paginator
 
 
 # Create your views here.
@@ -54,3 +55,23 @@ def add_products(request):
         Product.objects.create(**product_to_create)
 
     return render(request, 'add_products.html')
+
+
+def all_products(request):
+    """create a Paginator object"""
+    all_products = []
+    for product in Product.objects.all():
+        all_products.append(
+            {'product_name': product.product_name, 'description': product.description, 'preview': product.preview,
+              'category': product.category, 'unit_price': product.unit_price}
+        )
+    p = Paginator(all_products, per_page=3)
+    page_number = request.GET.get('page', 1)
+    page = p.page(page_number)
+
+    context = {
+        'object_list': page.object_list,
+        'page_obj': page,
+        'title': 'All products'
+    }
+    return render(request, 'products_by_page.html', context)
