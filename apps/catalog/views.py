@@ -27,3 +27,6 @@ def contacts(request):
              {'first_name': contact.first_name, 'last_name': contact.last_name, 'phone': contact.phone,
               'email': contact.email})
     return render(request, 'contacts.html', context)
+
+def products(request):
+    return render(request, 'products.html')
