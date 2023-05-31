@@ -1,6 +1,8 @@
 from django.shortcuts import render
 import json
-from apps.catalog.models import Product, Contacts
+from apps.catalog.models import Product, Contacts, Category
+from django.core.paginator import Paginator
+
 
 # Create your views here.
 
@@ -9,6 +11,7 @@ def homepage(request):
     for d in data:
         print(d)
     return render(request, 'homepage.html')
+
 
 def contacts(request):
     if request.method == 'POST':
@@ -24,6 +27,51 @@ def contacts(request):
     context = {'contact': []}
     for contact in Contacts.objects.all():
         context['contact'].append(
-             {'first_name': contact.first_name, 'last_name': contact.last_name, 'phone': contact.phone,
-              'email': contact.email})
+            {'first_name': contact.first_name, 'last_name': contact.last_name, 'phone': contact.phone,
+             'email': contact.email})
     return render(request, 'contacts.html', context)
+
+
+def products(request):
+    products_list = Product.objects.all()
+    context = {
+        'objects_list': products_list,
+        'title': 'Products'
+    }
+    return render(request, 'products.html', context)
+
+
+def add_products(request):
+    if request.method == 'POST':
+        product_name = request.POST.get('product_name')
+        description = request.POST.get('description')
+        preview = request.POST.get('preview')
+        category = Category.objects.get(pk=request.POST.get('category'))
+        unit_price = request.POST.get('unit_price')
+
+        product_to_create = {'product_name': product_name, 'description': description, 'preview': preview,
+                             'category': category, 'unit_price': unit_price}
+
+        Product.objects.create(**product_to_create)
+
+    return render(request, 'add_products.html')
+
+
+def all_products(request):
+    """create a Paginator object"""
+    all_products = []
+    for product in Product.objects.all():
+        all_products.append(
+            {'product_name': product.product_name, 'description': product.description, 'preview': product.preview,
+              'category': product.category, 'unit_price': product.unit_price}
+        )
+    p = Paginator(all_products, per_page=3)
+    page_number = request.GET.get('page', 1)
+    page = p.page(page_number)
+
+    context = {
+        'object_list': page.object_list,
+        'page_obj': page,
+        'title': 'All products'
+    }
+    return render(request, 'products_by_page.html', context)
