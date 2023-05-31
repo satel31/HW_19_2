@@ -1,6 +1,7 @@
 from django.shortcuts import render
 import json
-from apps.catalog.models import Product, Contacts
+from apps.catalog.models import Product, Contacts, Category
+
 
 # Create your views here.
 
@@ -9,6 +10,7 @@ def homepage(request):
     for d in data:
         print(d)
     return render(request, 'homepage.html')
+
 
 def contacts(request):
     if request.method == 'POST':
@@ -24,9 +26,10 @@ def contacts(request):
     context = {'contact': []}
     for contact in Contacts.objects.all():
         context['contact'].append(
-             {'first_name': contact.first_name, 'last_name': contact.last_name, 'phone': contact.phone,
-              'email': contact.email})
+            {'first_name': contact.first_name, 'last_name': contact.last_name, 'phone': contact.phone,
+             'email': contact.email})
     return render(request, 'contacts.html', context)
+
 
 def products(request):
     products_list = Product.objects.all()
@@ -35,3 +38,19 @@ def products(request):
         'title': 'Products'
     }
     return render(request, 'products.html', context)
+
+
+def add_products(request):
+    if request.method == 'POST':
+        product_name = request.POST.get('product_name')
+        description = request.POST.get('description')
+        preview = request.POST.get('preview')
+        category = Category.objects.get(pk=request.POST.get('category'))
+        unit_price = request.POST.get('unit_price')
+
+        product_to_create = {'product_name': product_name, 'description': description, 'preview': preview,
+                             'category': category, 'unit_price': unit_price}
+
+        Product.objects.create(**product_to_create)
+
+    return render(request, 'add_products.html')
