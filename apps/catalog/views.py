@@ -29,4 +29,5 @@ def contacts(request):
     return render(request, 'contacts.html', context)
 
 def products(request):
+
     return render(request, 'products.html')
