@@ -49,7 +49,7 @@ def add_products(request):
         category = Category.objects.get(pk=request.POST.get('category'))
         unit_price = request.POST.get('unit_price')
 
-        product_to_create = {'product_name': product_name, 'description': description, 'preview': preview,
+        product_to_create = {'product_name': product_name, 'description': description, 'preview': f'products/{preview}',
                              'category': category, 'unit_price': unit_price}
 
         Product.objects.create(**product_to_create)
