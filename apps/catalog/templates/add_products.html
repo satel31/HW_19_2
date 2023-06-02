@@ -3,7 +3,8 @@
 {% load my_tags %}
 
 {% block content %}
-    <form action="" method="post" class="form-floating">
+    {#  <form enctype="multipart/form-data" action="" method="post" class="form-floating">#}
+    <form enctype="multipart/form-data" method="post" id="product_form" novalidate>
         {% csrf_token %}
         <div>
             <label for="product_name">Product name</label>
@@ -14,8 +15,8 @@
             <input id="description" type="text" name="description" class="form-control">
         </div>
         <div>
-            <label for="preview">Preview</label>
-            <input id="preview" type="file" name="preview" class="form-control" accept="image/*">
+            <label for="id_preview">Preview:</label>
+            <input type="file" name="preview" accept="image/*" id="id_preview">
         </div>
         <div>
             <label class="required" for="id_category">Category:</label>
