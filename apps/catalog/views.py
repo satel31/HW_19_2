@@ -2,6 +2,7 @@ from django.shortcuts import render
 import json
 from apps.catalog.models import Product, Contacts, Category
 from django.core.paginator import Paginator
+from django.core.files.storage import FileSystemStorage
 
 
 # Create your views here.
@@ -42,14 +43,19 @@ def products(request):
 
 
 def add_products(request):
-    if request.method == 'POST':
+    folder = 'media/products/'
+    if request.method == 'POST' and request.FILES:
         product_name = request.POST.get('product_name')
         description = request.POST.get('description')
-        preview = request.POST.get('preview')
+        preview = request.FILES['preview']
+        fs = FileSystemStorage(location=folder)
+        filename = fs.save(preview.name, preview)
+        preview_url = fs.url(filename)[7:]
         category = Category.objects.get(pk=request.POST.get('category'))
         unit_price = request.POST.get('unit_price')
 
-        product_to_create = {'product_name': product_name, 'description': description, 'preview': f'products/{preview}',
+        product_to_create = {'product_name': product_name, 'description': description,
+                             'preview': f'products/{preview_url}',
                              'category': category, 'unit_price': unit_price}
 
         Product.objects.create(**product_to_create)
@@ -63,7 +69,7 @@ def all_products(request):
     for product in Product.objects.all():
         all_products.append(
             {'product_name': product.product_name, 'description': product.description, 'preview': product.preview,
-              'category': product.category, 'unit_price': product.unit_price}
+             'category': product.category, 'unit_price': product.unit_price}
         )
     p = Paginator(all_products, per_page=3)
     page_number = request.GET.get('page', 1)
