@@ -13,7 +13,6 @@ def homepage(request):
         print(d)
     return render(request, 'homepage.html')
 
-
 def contacts(request):
     if request.method == 'POST':
         name = request.POST.get('name')
