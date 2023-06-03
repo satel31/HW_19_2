@@ -1,10 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect
 import json
-from apps.catalog.models import Product, Contacts, Category
+from apps.catalog.models import Product, Contacts, Category, Post
 from django.core.paginator import Paginator
 from django.core.files.storage import FileSystemStorage
-from django.views.generic import ListView, CreateView
-from django.urls import reverse_lazy
+from django.views.generic import ListView, CreateView, UpdateView, DetailView, DeleteView
+from django.urls import reverse_lazy, reverse
 
 
 # Create your views here.
@@ -74,3 +74,40 @@ class ProductByPageListView(ListView):
     extra_context = {
         'title': 'All products'
     }
+
+
+class PostCreateView(CreateView):
+    model = Post
+    fields = ('post_title', 'text', 'slug', 'preview')
+    success_url = reverse_lazy('catalog:blog')
+
+class PostListView(ListView):
+    model = Post
+    extra_context = {
+        'title': 'Our blog'
+    }
+class PostDetailView(DetailView):
+    model = Post
+
+    def get_context_data(self, *args, **kwargs):
+        context_data = super().get_context_data(**kwargs)
+        context_data['title'] = context_data['object'].post_title
+        return context_data
+class PostUpdateView(UpdateView):
+    model = Post
+    fields = ('post_title', 'text', 'slug', 'preview')
+    success_url = reverse_lazy('catalog:blog')
+class PostDeleteView(DeleteView):
+    model = Post
+    success_url = reverse_lazy('catalog:blog')
+
+def toggle_activity(request, pk):
+    post_item = get_object_or_404(Post, pk=pk)
+    if post_item.is_published:
+        post_item.is_published = False
+    else:
+        post_item.is_published = True
+
+    post_item.save()
+
+    return redirect(reverse('catalog:post', args=[post_item.pk]))
