@@ -19,4 +19,5 @@ class ContactsAdmin(admin.ModelAdmin):
 
 @admin.register(Post)
 class ContactsAdmin(admin.ModelAdmin):
-    list_display = ('post_title',)
+    list_display = ('post_title', 'slug',)
+    prepopulated_fields = {'slug': ('post_title',)}

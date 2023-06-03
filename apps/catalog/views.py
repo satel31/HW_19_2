@@ -78,7 +78,7 @@ class ProductByPageListView(ListView):
 
 class PostCreateView(CreateView):
     model = Post
-    fields = ('post_title', 'text', 'slug', 'preview')
+    fields = ('post_title', 'text', 'preview')
     success_url = reverse_lazy('catalog:blog')
 
 class PostListView(ListView):
