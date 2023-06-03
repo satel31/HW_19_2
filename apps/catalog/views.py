@@ -86,6 +86,13 @@ class PostListView(ListView):
     extra_context = {
         'title': 'Our blog'
     }
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        queryset = queryset.filter(is_published=True)
+        return queryset
+
+    
 class PostDetailView(DetailView):
     model = Post
 
