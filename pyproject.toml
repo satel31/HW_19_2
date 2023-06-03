@@ -4,7 +4,7 @@ version = "0.1.0"
 description = "HW for SkyPro course"
 authors = ["satel31 <blokhnina.tatiana@yandex.ru>"]
 readme = "README.md"
-packages = [{include = "hw_19_2"}]
+packages = [{ include = "hw_19_2" }]
 
 [tool.poetry.dependencies]
 python = "^3.11"
@@ -16,6 +16,7 @@ pillow = "^9.5.0"
 ipython = "^8.13.2"
 python-dotenv = "^1.0.0"
 django = "^4.2.1"
+transliterate = "^1.10.2"
 
 [build-system]
 requires = ["poetry-core"]

@@ -78,7 +78,7 @@ class ProductByPageListView(ListView):
 
 class PostCreateView(CreateView):
     model = Post
-    fields = ('post_title', 'text', 'slug', 'preview')
+    fields = ('post_title', 'text', 'preview')
     success_url = reverse_lazy('catalog:blog')
 
 class PostListView(ListView):
@@ -86,6 +86,13 @@ class PostListView(ListView):
     extra_context = {
         'title': 'Our blog'
     }
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        queryset = queryset.filter(is_published=True)
+        return queryset
+
+
 class PostDetailView(DetailView):
     model = Post
 
@@ -93,10 +100,20 @@ class PostDetailView(DetailView):
         context_data = super().get_context_data(**kwargs)
         context_data['title'] = context_data['object'].post_title
         return context_data
+
+    def get_object(self, queryset=None):
+        object = self.model.objects.get(pk=self.kwargs['pk'])
+        if object:
+            object.views += 1
+            object.save()
+        return object
+
 class PostUpdateView(UpdateView):
     model = Post
     fields = ('post_title', 'text', 'slug', 'preview')
-    success_url = reverse_lazy('catalog:blog')
+
+    def get_success_url(self):
+        return reverse_lazy('catalog:post', kwargs={'pk': self.kwargs['pk']})
 class PostDeleteView(DeleteView):
     model = Post
     success_url = reverse_lazy('catalog:blog')
