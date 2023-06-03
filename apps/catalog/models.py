@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.text import slugify
 
+
 NULLABLE = {'blank': True, 'null': True}
 
 
