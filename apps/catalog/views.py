@@ -92,7 +92,7 @@ class PostListView(ListView):
         queryset = queryset.filter(is_published=True)
         return queryset
 
-    
+
 class PostDetailView(DetailView):
     model = Post
 
@@ -111,7 +111,9 @@ class PostDetailView(DetailView):
 class PostUpdateView(UpdateView):
     model = Post
     fields = ('post_title', 'text', 'slug', 'preview')
-    success_url = reverse_lazy('catalog:blog')
+
+    def get_success_url(self):
+        return reverse_lazy('catalog:post', kwargs={'pk': self.kwargs['pk']})
 class PostDeleteView(DeleteView):
     model = Post
     success_url = reverse_lazy('catalog:blog')
