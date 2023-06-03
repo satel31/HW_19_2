@@ -93,6 +93,14 @@ class PostDetailView(DetailView):
         context_data = super().get_context_data(**kwargs)
         context_data['title'] = context_data['object'].post_title
         return context_data
+
+    def get_object(self, queryset=None):
+        object = self.model.objects.get(pk=self.kwargs['pk'])
+        if object:
+            object.views += 1
+            object.save()
+        return object
+
 class PostUpdateView(UpdateView):
     model = Post
     fields = ('post_title', 'text', 'slug', 'preview')
