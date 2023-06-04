@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.text import slugify
+from apps.catalog.services import transliterate
 
 
 NULLABLE = {'blank': True, 'null': True}
@@ -60,6 +61,7 @@ class Post(models.Model):
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self, self.post_title)
+            self.slug = transliterate(self.slug)
         super().save(*args, **kwargs)
 
     def delete(self, *args, **kwargs):
