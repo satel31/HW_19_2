@@ -68,7 +68,7 @@ class Post(models.Model):
         self.save()
 
     def __str__(self):
-        return f'Post Title: {self.post_title}'
+        return f'{self.post_title}'
 
     class Meta:
         verbose_name = 'post'
