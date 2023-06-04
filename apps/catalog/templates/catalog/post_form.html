@@ -5,34 +5,20 @@
 {% block content %}
     <form enctype="multipart/form-data" method="post" id="product_form" novalidate>
         {% csrf_token %}
-        <div class="form-group">
+        <div>
             <label for="post_title">Post title</label>
-            {% if object %}
-                <input name="title" type="text" value="{{ object.post_title }}" maxlength="200" id="titleInput"
-                       class="form-control">
-            {% else %}
-                <input name="title" type="text" value="Post title" maxlength="200" id="titleInput"
-                       class="form-control">
-            {% endif %}
-
+            <input id="post_title" type="text" name="post_title" class="form-control" value="{{ object.post_title }}"
+                   required>
         </div>
-        <div class="form-group">
+        <div>
             <label for="text">Text</label>
-            {% if object %}
-                <textarea name="text" rows="3" class="form-control jsCountCharacters"
-                          id="text">{{ object.text }}</textarea>
-            {% else %}
-                <textarea name="text" rows="3" class="form-control jsCountCharacters"
-                          id="text"></textarea>
-            {% endif %}
-            <p id="commentBeforeError" class="help-block form-error"></p>
+            <textarea name="text" rows="3" class="form-control jsCountCharacters"
+                      id="text">{{ object.text }}</textarea>
         </div>
-
         <div>
             <label for="id_preview">Preview:</label>
             <input type="file" name="preview" accept="image/*" id="id_preview">
         </div>
-
         <button class="w-100 btn btn-lg btn-primary" type="submit">Save and publish</button>
 
         {% if object %}
@@ -46,4 +32,5 @@
         {% endif %}
         </a>
     </form>
+
 {% endblock %}
