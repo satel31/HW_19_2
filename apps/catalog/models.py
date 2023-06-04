@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.text import slugify
+from apps.catalog.services import transliterate
 
 
 NULLABLE = {'blank': True, 'null': True}
@@ -54,12 +55,13 @@ class Post(models.Model):
     text = models.TextField(verbose_name='Text', **NULLABLE)
     preview = models.ImageField(upload_to='blog/', verbose_name='Preview', **NULLABLE)
     published_date = models.DateTimeField(auto_now_add=True, verbose_name='Creation Date')
-    is_published = models.BooleanField(default=False, verbose_name='Published')
+    is_published = models.BooleanField(default=True, verbose_name='Published')
     views = models.IntegerField(default=0, verbose_name='Views')
 
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self, self.post_title)
+            self.slug = transliterate(self.slug)
         super().save(*args, **kwargs)
 
     def delete(self, *args, **kwargs):
@@ -68,7 +70,7 @@ class Post(models.Model):
         self.save()
 
     def __str__(self):
-        return f'Post Title: {self.post_title}'
+        return f'{self.post_title}'
 
     class Meta:
         verbose_name = 'post'

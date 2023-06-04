@@ -5,6 +5,7 @@ from django.core.paginator import Paginator
 from django.core.files.storage import FileSystemStorage
 from django.views.generic import ListView, CreateView, UpdateView, DetailView, DeleteView
 from django.urls import reverse_lazy, reverse
+from apps.catalog.services import send_email
 
 
 # Create your views here.
@@ -106,6 +107,8 @@ class PostDetailView(DetailView):
         if object:
             object.views += 1
             object.save()
+            if object.views == 100:
+                send_email(object.post_title)
         return object
 
 class PostUpdateView(UpdateView):
