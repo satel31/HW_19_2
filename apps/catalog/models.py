@@ -1,4 +1,7 @@
 from django.db import models
+from django.utils.text import slugify
+from apps.catalog.services import transliterate
+
 
 NULLABLE = {'blank': True, 'null': True}
 
@@ -31,6 +34,7 @@ class Category(models.Model):
         verbose_name = 'category'
         verbose_name_plural = 'categories'
 
+
 class Contacts(models.Model):
     first_name = models.CharField(max_length=100, verbose_name='First Name')
     last_name = models.CharField(max_length=100, verbose_name='Last Name')
@@ -43,3 +47,31 @@ class Contacts(models.Model):
     class Meta:
         verbose_name = 'contact'
         verbose_name_plural = 'contacts'
+
+
+class Post(models.Model):
+    post_title = models.CharField(max_length=250, verbose_name='Post Title')
+    slug = models.CharField(max_length=50, verbose_name='Slug', **NULLABLE)
+    text = models.TextField(verbose_name='Text', **NULLABLE)
+    preview = models.ImageField(upload_to='blog/', verbose_name='Preview', **NULLABLE)
+    published_date = models.DateTimeField(auto_now_add=True, verbose_name='Creation Date')
+    is_published = models.BooleanField(default=True, verbose_name='Published')
+    views = models.IntegerField(default=0, verbose_name='Views')
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self, self.post_title)
+            self.slug = transliterate(self.slug)
+        super().save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        if self.is_published:
+            self.is_published = False
+        self.save()
+
+    def __str__(self):
+        return f'{self.post_title}'
+
+    class Meta:
+        verbose_name = 'post'
+        verbose_name_plural = 'posts'

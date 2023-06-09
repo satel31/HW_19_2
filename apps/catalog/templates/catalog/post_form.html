@@ -1,0 +1,36 @@
+{% extends 'catalog/base.html' %}
+
+{% load my_tags %}
+
+{% block content %}
+    <form enctype="multipart/form-data" method="post" id="product_form" novalidate>
+        {% csrf_token %}
+        <div>
+            <label for="post_title">Post title</label>
+            <input id="post_title" type="text" name="post_title" class="form-control" value="{{ object.post_title }}"
+                   required>
+        </div>
+        <div>
+            <label for="text">Text</label>
+            <textarea name="text" rows="3" class="form-control jsCountCharacters"
+                      id="text">{{ object.text }}</textarea>
+        </div>
+        <div>
+            <label for="id_preview">Preview:</label>
+            <input type="file" name="preview" accept="image/*" id="id_preview">
+        </div>
+        <button class="w-100 btn btn-lg btn-primary" type="submit">Save and publish</button>
+
+        {% if object %}
+            <a type="button" href="{% url 'catalog:post_delete' object.pk %}">Delete</a>
+            <a type="button" href="{% url 'catalog:toggle_activity' object.pk %}">
+            {% if object.is_published %}
+                Not published
+            {% else %}
+                Published
+            {% endif %}
+        {% endif %}
+        </a>
+    </form>
+
+{% endblock %}

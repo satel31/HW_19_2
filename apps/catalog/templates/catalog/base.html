@@ -83,7 +83,7 @@
 </div>
 
 
-{% include 'includes/inc_menu.html' %}
+{% include 'catalog/includes/inc_menu.html' %}
 
 <main>
 
@@ -91,7 +91,7 @@
         <div class="row py-lg-5">
             <div class="col-lg-6 col-md-8 mx-auto">
                 <h1 class="fw-light">{{ title }}</h1>
-                <p class="lead text-body-secondary">This is the page with all products</p>
+                <p class="lead text-body-secondary">Magical shop website</p>
             </div>
         </div>
     </section>
@@ -112,6 +112,7 @@
     <div class="container">
         <p class="float-end mb-1">
             <a href="{% url 'catalog:add_products' %}">Create a new product</a>
+            <a href="{% url 'catalog:add_post' %}">Create a new post</a>
         </p>
     </div>
 </footer>
