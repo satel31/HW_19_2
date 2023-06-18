@@ -2,7 +2,6 @@ from django import forms
 from apps.catalog.models import Product, Version
 
 
-
 class ProductForm(forms.ModelForm):
     class Meta:
 
