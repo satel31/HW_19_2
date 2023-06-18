@@ -19,14 +19,6 @@ class ProductListView(ListView):
         'title': 'Products'
     }
 
-    def get_context_data(self, **kwargs):
-        context_data = super().get_context_data(**kwargs)
-        products = context_data['object_list']
-        for product in products:
-            product.get_active_version()
-        return context_data
-
-
 class ProductByPageListView(ListView):
     model = Product
     template_name = 'catalog/products_by_page_list.html'
