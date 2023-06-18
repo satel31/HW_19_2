@@ -1,6 +1,6 @@
 from django import forms
-from apps.catalog.models import Product
-import re
+from apps.catalog.models import Product, Version
+
 
 
 class ProductForm(forms.ModelForm):
@@ -21,3 +21,8 @@ class ProductForm(forms.ModelForm):
                 raise forms.ValidationError('There is at least one prohibited word in the name or the description')
 
         return cleaned_data
+
+
+class Version(forms.ModelForm):
+    model = Version
+    fields = '__all__'
