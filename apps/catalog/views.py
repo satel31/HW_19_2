@@ -19,11 +19,6 @@ class ProductListView(ListView):
         'title': 'Products'
     }
 
-class ProductCreateView(CreateView):
-    model = Product
-    fields = ('product_name', 'description', 'preview', 'category', 'unit_price')
-    success_url = reverse_lazy('catalog:products')
-
 
 class ProductByPageListView(ListView):
     model = Product
@@ -42,6 +37,7 @@ class ProductDetailView(DetailView):
         context_data['title'] = context_data['object'].product_name
         return context_data
 
+
 class ProductUpdateView(UpdateView):
     model = Product
     form_class = ProductForm
@@ -49,9 +45,11 @@ class ProductUpdateView(UpdateView):
     def get_success_url(self):
         return reverse_lazy('catalog:product', kwargs={'pk': self.kwargs['pk']})
 
+
 class ProductDeleteView(DeleteView):
     model = Product
     success_url = reverse_lazy('catalog:products')
+
 
 class PostCreateView(CreateView):
     model = Post
