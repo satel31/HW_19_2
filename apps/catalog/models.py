@@ -1,7 +1,7 @@
+from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from django.utils.text import slugify
 from apps.catalog.services import transliterate
-
 
 NULLABLE = {'blank': True, 'null': True}
 
@@ -14,6 +14,14 @@ class Product(models.Model):
     unit_price = models.IntegerField(verbose_name='Unit Price')
     creation_date = models.DateTimeField(auto_now_add=True, verbose_name='Creation Date')
     last_modified = models.DateTimeField(auto_now=True, verbose_name='Last Modified')
+
+    @property
+    def active_version(self):
+        current_versions = self.version_set.filter(is_active=True)
+        print(current_versions)
+        if len(current_versions) != 0:
+            return current_versions
+        return None
 
     def __str__(self):
         return f'Product Name: {self.product_name}'
@@ -75,3 +83,17 @@ class Post(models.Model):
     class Meta:
         verbose_name = 'post'
         verbose_name_plural = 'posts'
+
+
+class Version(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name='Product')
+    number = models.CharField(max_length=255, verbose_name='Version number')
+    name = models.CharField(max_length=255, verbose_name='Version name')
+    is_active = models.BooleanField(default=False, verbose_name='Active')
+
+    def __str__(self):
+        return f'{self.name} ({self.number}): {self.product}'
+
+    class Meta:
+        verbose_name = 'version'
+        verbose_name_plural = 'versions'
