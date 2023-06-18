@@ -16,8 +16,10 @@
                     <p class="card-text">{{ object.text|truncatechars:100 }}</p>
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="btn-group">
-                            <a type="button" href="{% url 'catalog:post' object.pk %}">View</a>
-                            <a type="button" href="{% url 'catalog:post_update' object.pk %}">Edit</a>
+                            <a type="button" class="btn btn-sm btn-outline-secondary"
+                               href="{% url 'catalog:post' object.pk %}">View</a>
+                            <a type="button" class="btn btn-sm btn-outline-secondary"
+                               href="{% url 'catalog:post_update' object.pk %}">Edit</a>
                         </div>
                         <small class="text-body-secondary">{{ object.published_date }}</small>
                     </div>

@@ -16,8 +16,12 @@
                     <p class="card-text">{{ object.description|truncatechars:100 }}</p>
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="btn-group">
-                            <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                            <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+                            <a type="button" class="btn btn-sm btn-outline-secondary"
+                               href="{% url 'catalog:product' object.pk %}">View</a>
+                            <a type="button" class="btn btn-sm btn-outline-secondary"
+                               href="{% url 'catalog:product_update' object.pk %}">Edit</a>
+                            <a type="button" class="btn btn-sm btn-outline-secondary"
+                               href="{% url 'catalog:product_delete' object.pk %}">Delete</a>
                         </div>
                         <small class="text-body-secondary">${{ object.unit_price }}</small>
                     </div>
