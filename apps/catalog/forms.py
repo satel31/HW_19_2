@@ -33,3 +33,11 @@ class VersionForm(StyleFormMixin, forms.ModelForm):
     class Meta:
         model = Version
         fields = '__all__'
+
+    def clean_is_active(self):
+        cleaned_data = super().clean()
+        is_active = cleaned_data.get('is_active')
+        product = cleaned_data.get('product')
+        Version.objects.filter(product=product).exclude(id=self.instance.id).update(is_active=False)
+        return is_active
+
