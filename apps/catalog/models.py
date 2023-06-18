@@ -15,6 +15,14 @@ class Product(models.Model):
     creation_date = models.DateTimeField(auto_now_add=True, verbose_name='Creation Date')
     last_modified = models.DateTimeField(auto_now=True, verbose_name='Last Modified')
 
+    @property
+    def active_version(self):
+        current_versions = self.version_set.filter(is_active=True)
+        print(current_versions)
+        if len(current_versions) != 0:
+            return current_versions
+        return None
+
     def __str__(self):
         return f'Product Name: {self.product_name}'
 
@@ -58,9 +66,6 @@ class Post(models.Model):
     is_published = models.BooleanField(default=True, verbose_name='Published')
     views = models.IntegerField(default=0, verbose_name='Views')
 
-    def get_active_version(self):
-        return Version.get_active_version(self)
-
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self, self.post_title)
@@ -85,15 +90,6 @@ class Version(models.Model):
     number = models.CharField(max_length=255, verbose_name='Version number')
     name = models.CharField(max_length=255, verbose_name='Version name')
     is_active = models.BooleanField(default=False, verbose_name='Active')
-
-    @classmethod
-    def get_active_version(cls, product):
-        try:
-            version = cls.objects.get(product=product, is_active=True)
-        except ObjectDoesNotExist:
-            version = None
-        finally:
-            return version
 
     def __str__(self):
         return f'{self.name} ({self.number}): {self.product}'
