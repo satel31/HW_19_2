@@ -23,7 +23,6 @@ class ProductListView(ListView):
         'title': 'Products'
     }
 
-
 #def add_products(request):
     #folder = 'media/products/'
     #if request.method == 'POST' and request.FILES:
