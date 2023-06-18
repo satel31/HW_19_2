@@ -18,7 +18,6 @@ class Product(models.Model):
     @property
     def active_version(self):
         current_versions = self.version_set.filter(is_active=True)
-        print(current_versions)
         if len(current_versions) != 0:
             return current_versions
         return None
