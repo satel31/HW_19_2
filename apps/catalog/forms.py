@@ -2,7 +2,14 @@ from django import forms
 from apps.catalog.models import Product, Version
 
 
-class ProductForm(forms.ModelForm):
+class StyleFormMixin:
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.widget.attrs['class'] = 'form-control-10'
+
+
+class ProductForm(StyleFormMixin, forms.ModelForm):
     class Meta:
 
         model = Product
@@ -22,6 +29,7 @@ class ProductForm(forms.ModelForm):
         return cleaned_data
 
 
-class Version(forms.ModelForm):
-    model = Version
-    fields = '__all__'
+class VersionForm(StyleFormMixin, forms.ModelForm):
+    class Meta:
+        model = Version
+        fields = '__all__'

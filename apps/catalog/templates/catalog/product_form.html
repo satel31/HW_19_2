@@ -4,10 +4,33 @@
 
 {% block content %}
     <form enctype="multipart/form-data" method="post" id="product_form" novalidate>
-        {% csrf_token %}
-        {{ form.as_p }}
+        <div class="row flex-wrap">
+            <div class="col-md-6">
+                <div class="card">
 
-        <button class="w-100 btn btn-lg btn-primary" type="submit">Save</button>
+                    {% csrf_token %}
+                    {{ form.as_p }}
+
+                    <button class="w-100 btn btn-lg btn-primary" type="submit">Save</button>
+
+                </div>
+            </div>
+        </div>
+        <div class="row flex-wrap">
+            <div class="col-md-6">
+                <div class="card">
+                    {{ formset.management_form }}
+                    {% for form in formset.forms %}
+                        {{ form.as_p }}
+                        {% if not forloop.last %}
+                            <hr>
+                        {% endif %}
+                    {% endfor %}
+
+                </div>
+            </div>
+        </div>
     </form>
+
 
 {% endblock %}
