@@ -2,7 +2,6 @@ from django.db import models
 from django.utils.text import slugify
 from apps.catalog.services import transliterate
 
-
 NULLABLE = {'blank': True, 'null': True}
 
 
@@ -75,3 +74,17 @@ class Post(models.Model):
     class Meta:
         verbose_name = 'post'
         verbose_name_plural = 'posts'
+
+
+class Version(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name='Product')
+    number = models.CharField(max_length=255, verbose_name='Version number')
+    name = models.CharField(max_length=255, verbose_name='Version name')
+    is_active = models.BooleanField(default=False, verbose_name='Active')
+
+    def __str__(self):
+        return f'{self.name} ({self.number}): {self.product}'
+
+    class Meta:
+        verbose_name = 'version'
+        verbose_name_plural = 'versions'
