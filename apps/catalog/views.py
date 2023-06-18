@@ -1,21 +1,17 @@
-from django.shortcuts import render, get_object_or_404, redirect
-import json
-from apps.catalog.models import Product, Contacts, Category, Post
-from django.core.paginator import Paginator
-from django.core.files.storage import FileSystemStorage
+from django.shortcuts import get_object_or_404, redirect
+
+from apps.catalog.forms import ProductForm
+from apps.catalog.models import Product, Post
 from django.views.generic import ListView, CreateView, UpdateView, DetailView, DeleteView
 from django.urls import reverse_lazy, reverse
 from apps.catalog.services import send_email
 
 
-# Create your views here.
-#def products(request):
-    #products_list = Product.objects.all()
-    #context = {
-        #'objects_list': products_list,
-        #'title': 'Products'
-    #}
-    #return render(request, 'product_list.html', context)
+class ProductCreateView(CreateView):
+    model = Product
+    form_class = ProductForm
+    success_url = reverse_lazy('catalog:products')
+
 
 class ProductListView(ListView):
     model = Product
@@ -23,49 +19,11 @@ class ProductListView(ListView):
         'title': 'Products'
     }
 
-#def add_products(request):
-    #folder = 'media/products/'
-    #if request.method == 'POST' and request.FILES:
-        #product_name = request.POST.get('product_name')
-        #description = request.POST.get('description')
-        #preview = request.FILES['preview']
-        #fs = FileSystemStorage(location=folder)
-        #filename = fs.save(preview.name, preview)
-        #preview_url = fs.url(filename)[7:]
-        #category = Category.objects.get(pk=request.POST.get('category'))
-        #unit_price = request.POST.get('unit_price')
-
-        #product_to_create = {'product_name': product_name, 'description': description,
-                             #'preview': f'products/{preview_url}',
-                             #'category': category, 'unit_price': unit_price}
-
-        #Product.objects.create(**product_to_create)
-
-    #return render(request, 'product_form.html')
-
 class ProductCreateView(CreateView):
     model = Product
     fields = ('product_name', 'description', 'preview', 'category', 'unit_price')
     success_url = reverse_lazy('catalog:products')
 
-#def all_products(request):
-    #"""create a Paginator object"""
-    #all_products = []
-    #for product in Product.objects.all():
-        #all_products.append(
-            #{'product_name': product.product_name, 'description': product.description, 'preview': product.preview,
-            # 'category': product.category, 'unit_price': product.unit_price}
-        #)
-    #p = Paginator(all_products, per_page=3)
-    #page_number = request.GET.get('page', 1)
-    #page = p.page(page_number)
-
-    #context = {
-        #'object_list': page.object_list,
-        #'page_obj': page,
-        #'title': 'All products'
-    #}
-    #return render(request, 'products_by_page_list.html', context)
 
 class ProductByPageListView(ListView):
     model = Product
@@ -76,10 +34,30 @@ class ProductByPageListView(ListView):
     }
 
 
+class ProductDetailView(DetailView):
+    model = Product
+
+    def get_context_data(self, *args, **kwargs):
+        context_data = super().get_context_data(**kwargs)
+        context_data['title'] = context_data['object'].product_name
+        return context_data
+
+class ProductUpdateView(UpdateView):
+    model = Product
+    form_class = ProductForm
+
+    def get_success_url(self):
+        return reverse_lazy('catalog:product', kwargs={'pk': self.kwargs['pk']})
+
+class ProductDeleteView(DeleteView):
+    model = Product
+    success_url = reverse_lazy('catalog:products')
+
 class PostCreateView(CreateView):
     model = Post
     fields = ('post_title', 'text', 'preview')
     success_url = reverse_lazy('catalog:blog')
+
 
 class PostListView(ListView):
     model = Post
@@ -110,15 +88,19 @@ class PostDetailView(DetailView):
                 send_email(object.post_title)
         return object
 
+
 class PostUpdateView(UpdateView):
     model = Post
     fields = ('post_title', 'text', 'slug', 'preview')
 
     def get_success_url(self):
         return reverse_lazy('catalog:post', kwargs={'pk': self.kwargs['pk']})
+
+
 class PostDeleteView(DeleteView):
     model = Post
     success_url = reverse_lazy('catalog:blog')
+
 
 def toggle_activity(request, pk):
     post_item = get_object_or_404(Post, pk=pk)
