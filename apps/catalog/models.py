@@ -1,3 +1,4 @@
+from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from django.utils.text import slugify
 from apps.catalog.services import transliterate
@@ -57,6 +58,9 @@ class Post(models.Model):
     is_published = models.BooleanField(default=True, verbose_name='Published')
     views = models.IntegerField(default=0, verbose_name='Views')
 
+    def get_active_version(self):
+        return Version.get_active_version(self)
+
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self, self.post_title)
@@ -81,6 +85,15 @@ class Version(models.Model):
     number = models.CharField(max_length=255, verbose_name='Version number')
     name = models.CharField(max_length=255, verbose_name='Version name')
     is_active = models.BooleanField(default=False, verbose_name='Active')
+
+    @classmethod
+    def get_active_version(cls, product):
+        try:
+            version = cls.objects.get(product=product, is_active=True)
+        except ObjectDoesNotExist:
+            version = None
+        finally:
+            return version
 
     def __str__(self):
         return f'{self.name} ({self.number}): {self.product}'
