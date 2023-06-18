@@ -19,6 +19,11 @@ class ProductListView(ListView):
         'title': 'Products'
     }
 
+class ProductCreateView(CreateView):
+    model = Product
+    fields = ('product_name', 'description', 'preview', 'category', 'unit_price')
+    success_url = reverse_lazy('catalog:products')
+
 
 class ProductByPageListView(ListView):
     model = Product
