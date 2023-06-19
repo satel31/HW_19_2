@@ -13,11 +13,20 @@
                 {% endif %}
                 <div class="card-body">
                     <p class="card-text">{{ object.product_name|title }}</p>
+                    {% if object.active_version %}
+                        {% for version in object.active_version %}
+                            <small class="text-body-secondary">{{ version.name }} ({{ version.number }})</small>
+                        {% endfor %}
+                    {% endif %}
                     <p class="card-text">{{ object.description|truncatechars:100 }}</p>
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="btn-group">
-                            <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                            <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+                            <a type="button" class="btn btn-sm btn-outline-secondary"
+                               href="{% url 'catalog:product' object.pk %}">View</a>
+                            <a type="button" class="btn btn-sm btn-outline-secondary"
+                               href="{% url 'catalog:product_update' object.pk %}">Edit</a>
+                            <a type="button" class="btn btn-sm btn-outline-secondary"
+                               href="{% url 'catalog:product_delete' object.pk %}">Delete</a>
                         </div>
                         <small class="text-body-secondary">${{ object.unit_price }}</small>
                     </div>

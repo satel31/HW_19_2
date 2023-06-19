@@ -3,49 +3,34 @@
 {% load my_tags %}
 
 {% block content %}
-    {#  <form enctype="multipart/form-data" action="" method="post" class="form-floating">#}
     <form enctype="multipart/form-data" method="post" id="product_form" novalidate>
-        {% csrf_token %}
-        <div>
-            <label for="product_name">Product name</label>
-            <input id="product_name" type="text" name="product_name" class="form-control" required>
-        </div>
-        <div>
-            <label for="description">Description.</label>
-            <input id="description" type="text" name="description" class="form-control">
-        </div>
-        <div>
-            <label for="id_preview">Preview:</label>
-            <input type="file" name="preview" accept="image/*" id="id_preview">
-        </div>
-        <div>
-            <label class="required" for="id_category">Category:</label>
+        <div class="row flex-wrap">
+            <div class="col-md-6">
+                <div class="card">
 
-            <div class="related-widget-wrapper">
-                <select name="category" required id="id_category">
-                    <option value="">---------</option>
+                    {% csrf_token %}
+                    {{ form.as_p }}
 
-                    <option value="1">Category Name: Beverages</option>
+                    <button class="w-100 btn btn-lg btn-primary" type="submit">Save</button>
 
-                    <option value="2">Category Name: Confections</option>
-
-                    <option value="3">Category Name: Dairy Products</option>
-
-                    <option value="4">Category Name: Grains/Cereals</option>
-
-                    <option value="5" selected>Category Name: Meat/Poultry</option>
-
-                    <option value="6">Category Name: Seafood</option>
-
-                </select>
+                </div>
             </div>
-            <div>
-                <label for="unit_price">Price</label>
-                <input id="unit_price" type="number" name="unit_price" class="form-control" required>
-            </div>
+        </div>
+        <div class="row flex-wrap">
+            <div class="col-md-6">
+                <div class="card">
+                    {{ formset.management_form }}
+                    {% for form in formset.forms %}
+                        {{ form.as_p }}
+                        {% if not forloop.last %}
+                            <hr>
+                        {% endif %}
+                    {% endfor %}
 
-            <button class="w-100 btn btn-lg btn-primary" type="submit">Save</button>
+                </div>
             </div>
+        </div>
     </form>
+
 
 {% endblock %}

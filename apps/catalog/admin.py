@@ -1,5 +1,5 @@
 from django.contrib import admin
-from apps.catalog.models import Category, Product, Contacts, Post
+from apps.catalog.models import Category, Product, Contacts, Post, Version
 
 # Register your models here.
 
@@ -21,3 +21,9 @@ class ContactsAdmin(admin.ModelAdmin):
 class ContactsAdmin(admin.ModelAdmin):
     list_display = ('post_title', 'slug',)
     prepopulated_fields = {'slug': ('post_title',)}
+
+@admin.register(Version)
+class VersionAdmin(admin.ModelAdmin):
+    list_display = ('product', 'name', 'number', 'is_active',)
+    list_filter = ('product',)
+    search_fields = ('product', 'name', 'number',)

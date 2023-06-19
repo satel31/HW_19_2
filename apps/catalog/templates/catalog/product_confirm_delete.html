@@ -1,18 +1,17 @@
 {% extends 'catalog/base.html' %}
 
 {% load my_tags %}
-
 {% block content %}
     <form method="post">
         <section class="content-section">
-            <h1>Removal of post {{ object.post_title }}</h1>
+            <h1>Removal of product {{ object.product_name }}</h1>
 
             <div class="alert alert-danger">
                 <p>Are you sure? </p>
             </div>
             {% csrf_token %}
-            <a href="{% url 'catalog:blog' %}" class="btn btn-default">No, it was a rash decision.</a>
-            <input type="submit" value="Yes, delete the post." class="btn btn-danger"/>
+            <a href="{% url 'catalog:products' %}" class="btn btn-default">No, it was a rash decision.</a>
+            <input type="submit" value="Yes, delete the product." class="btn btn-danger"/>
 
         </section>
     </form>
