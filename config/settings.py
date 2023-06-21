@@ -45,7 +45,8 @@ DJANGO_APPS = [
 THIRD_PARTY_APPS = []
 
 USER_APPS = [
-    'apps.catalog'
+    'apps.catalog',
+    'apps.users'
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + USER_APPS
@@ -147,3 +148,5 @@ EMAIL_HOST_PASSWORD = os.getenv('password_yandex')
 EMAIL_USE_TLS = False
 EMAIL_USE_SSL = True
 
+#Registration of users
+AUTH_USER_MODEL = 'users.User'
