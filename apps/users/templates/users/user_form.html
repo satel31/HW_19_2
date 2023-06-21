@@ -1,0 +1,24 @@
+{% extends 'catalog/base.html' %}
+
+{% load my_tags %}
+
+{% block content %}
+    <form enctype="multipart/form-data" method="post" id="product_form" novalidate>
+        <div class="row flex-wrap">
+            <div class="col-md-6">
+                <div class="card">
+
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <a type="button" class="btn btn-sm btn-outline-secondary"
+                       href="{% url 'users:update_password' object.pk %}">Update my password automatically</a>
+                    <button class="w-100 btn btn-lg btn-primary" type="submit">Save</button>
+
+
+                </div>
+            </div>
+        </div>
+    </form>
+
+
+{% endblock %}

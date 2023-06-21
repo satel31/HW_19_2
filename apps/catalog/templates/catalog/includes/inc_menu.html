@@ -1,10 +1,17 @@
 <header data-bs-theme="dark">
     <div class="container">
         <ul class="nav nav-pills">
-            <li class="nav-item"><a href="{% url 'catalog:products' %}" class="nav-link active" aria-current="page">Home</a></li>
+            <li class="nav-item"><a href="{% url 'catalog:products' %}" class="nav-link active"
+                                    aria-current="page">Home</a></li>
             <li class="nav-item"><a href="{% url 'catalog:all_products' %}" class="nav-link">All Products</a></li>
-            <li class="nav-item"><a href="#" class="nav-link">Pricing</a></li>
             <li class="nav-item"><a href="{% url 'catalog:blog' %}" class="nav-link">Blog</a></li>
+            {% if user.is_authenticated %}
+                <li class="nav-item"><a href="{% url 'users:logout' %}" class="nav-link">Log Out</a></li>
+                <li class="nav-item"><a href="{% url 'users:profile' user.pk %}" class="nav-link">Profile</a></li>
+            {% else %}
+                <li class="nav-item"><a href="{% url 'users:register' %}" class="nav-link">Sign Up</a></li>
+                <li class="nav-item"><a href="{% url 'users:login' %}" class="nav-link">Log In</a></li>
+            {% endif %}
             <li class="nav-item"><a href="#" class="nav-link">About</a></li>
         </ul>
     </div>
