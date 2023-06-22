@@ -16,6 +16,13 @@ class ProductForm(StyleFormMixin, forms.ModelForm):
         model = Product
         fields = '__all__'
 
+    def __init__(self, *args, **kwargs):
+        self.owner_id = None
+        if 'owner_id' in kwargs:
+            self.owner_id = kwargs['owner_id']
+            del kwargs['owner_id']
+        super().__init__(*args, **kwargs)
+
     def clean(self):
         cleaned_data = super().clean()
         name = cleaned_data.get('product_name').lower()
@@ -30,7 +37,6 @@ class ProductForm(StyleFormMixin, forms.ModelForm):
         return cleaned_data
 
     def save(self, *args, **kwargs):
-        self.owner_id = kwargs['owner_id']
         if self.owner_id:
             self.instance.owner = User.objects.get(pk=self.owner_id)
         return super().save(*args, **kwargs)
@@ -47,4 +53,3 @@ class VersionForm(StyleFormMixin, forms.ModelForm):
         product = cleaned_data.get('product')
         Version.objects.filter(product=product).exclude(id=self.instance.id).update(is_active=False)
         return is_active
-
