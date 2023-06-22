@@ -1,7 +1,7 @@
-from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from django.utils.text import slugify
 from apps.catalog.services import transliterate
+from apps.users.models import User
 
 NULLABLE = {'blank': True, 'null': True}
 
@@ -14,6 +14,7 @@ class Product(models.Model):
     unit_price = models.IntegerField(verbose_name='Unit Price')
     creation_date = models.DateTimeField(auto_now_add=True, verbose_name='Creation Date')
     last_modified = models.DateTimeField(auto_now=True, verbose_name='Last Modified')
+    owner = models.ForeignKey(User, on_delete=models.SET_NULL, **NULLABLE)
 
     @property
     def active_version(self):
