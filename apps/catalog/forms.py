@@ -1,5 +1,6 @@
 from django import forms
 from apps.catalog.models import Product, Version
+from apps.users.models import User
 
 
 class StyleFormMixin:
@@ -27,6 +28,12 @@ class ProductForm(StyleFormMixin, forms.ModelForm):
                 raise forms.ValidationError('There is at least one prohibited word in the name or the description')
 
         return cleaned_data
+
+    def save(self, *args, **kwargs):
+        self.owner_id = kwargs['owner_id']
+        if self.owner_id:
+            self.instance.owner = User.objects.get(pk=self.owner_id)
+        return super().save(*args, **kwargs)
 
 
 class VersionForm(StyleFormMixin, forms.ModelForm):
