@@ -24,10 +24,13 @@
                             <div class="btn-group">
                                 <a type="button" class="btn btn-sm btn-outline-secondary"
                                    href="{% url 'catalog:product' object.pk %}">View</a>
-                                <a type="button" class="btn btn-sm btn-outline-secondary"
-                                   href="{% url 'catalog:product_update' object.pk %}">Edit</a>
-                                <a type="button" class="btn btn-sm btn-outline-secondary"
-                                   href="{% url 'catalog:product_delete' object.pk %}">Delete</a>
+                                {% if user == object.owner or user.is_superuser %}
+                                    <a type="button" class="btn btn-sm btn-outline-secondary"
+                                       href="{% url 'catalog:product_update' object.pk %}">Edit</a>
+
+                                    <a type="button" class="btn btn-sm btn-outline-secondary"
+                                       href="{% url 'catalog:product_delete' object.pk %}">Delete</a>
+                                {% endif %}
                             </div>
                             <small class="text-body-secondary">${{ object.unit_price }}</small>
                         </div>
