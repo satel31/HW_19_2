@@ -3,7 +3,8 @@
 {% load my_tags %}
 
 {% block content %}
-    <form enctype="multipart/form-data" method="post" id="product_form" novalidate>
+    {% if perms.catalog.add_post or perms.catalog.change_post %}
+        <form enctype="multipart/form-data" method="post" id="product_form" novalidate>
         {% csrf_token %}
         <div>
             <label for="post_title">Post title</label>
@@ -22,7 +23,9 @@
         <button class="w-100 btn btn-lg btn-primary" type="submit">Save and publish</button>
 
         {% if object %}
-            <a type="button" href="{% url 'catalog:post_delete' object.pk %}">Delete</a>
+            {% if perms.catalog.delete_post %}
+                <a type="button" href="{% url 'catalog:post_delete' object.pk %}">Delete</a>
+            {% endif %}
             <a type="button" href="{% url 'catalog:toggle_activity' object.pk %}">
             {% if object.is_published %}
                 Not published
@@ -30,7 +33,8 @@
                 Published
             {% endif %}
         {% endif %}
-        </a>
-    </form>
+    </a>
+    {% endif %}
+</form>
 
 {% endblock %}
