@@ -1,4 +1,4 @@
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin, PermissionRequiredMixin
 from django.forms import inlineformset_factory
 from django.shortcuts import get_object_or_404, redirect
 
@@ -106,9 +106,10 @@ class ProductDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         return self.request.user == self.get_object().owner
 
 
-class PostCreateView(CreateView):
+class PostCreateView(PermissionRequiredMixin, CreateView):
     model = Post
     fields = ('post_title', 'text', 'preview')
+    permission_required = 'catalog.add_post'
     success_url = reverse_lazy('catalog:blog')
 
 
@@ -142,16 +143,18 @@ class PostDetailView(DetailView):
         return object
 
 
-class PostUpdateView(UpdateView):
+class PostUpdateView(PermissionRequiredMixin, UpdateView):
     model = Post
     fields = ('post_title', 'text', 'slug', 'preview')
+    permission_required = 'catalog.change_post'
 
     def get_success_url(self):
         return reverse_lazy('catalog:post', kwargs={'pk': self.kwargs['pk']})
 
 
-class PostDeleteView(DeleteView):
+class PostDeleteView(PermissionRequiredMixin, DeleteView):
     model = Post
+    permission_required = 'catalog.delete_post'
     success_url = reverse_lazy('catalog:blog')
 
 
