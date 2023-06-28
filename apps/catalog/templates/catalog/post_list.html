@@ -18,8 +18,10 @@
                         <div class="btn-group">
                             <a type="button" class="btn btn-sm btn-outline-secondary"
                                href="{% url 'catalog:post' object.pk %}">View</a>
-                            <a type="button" class="btn btn-sm btn-outline-secondary"
-                               href="{% url 'catalog:post_update' object.pk %}">Edit</a>
+                            {% if perms.catalog.change_post %}
+                                <a type="button" class="btn btn-sm btn-outline-secondary"
+                                   href="{% url 'catalog:post_update' object.pk %}">Edit</a>
+                            {% endif %}
                         </div>
                         <small class="text-body-secondary">{{ object.published_date }}</small>
                     </div>
