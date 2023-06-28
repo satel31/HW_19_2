@@ -4,30 +4,32 @@
 
 {% block content %}
     {% for object in object_list %}
-        <div class="col">
-            <div class="card shadow-sm">
-                {% if object.preview %}
-                    <img class="card-img-top"
-                         src="{{ object.preview|mediapath }}"
-                         alt="Card image cap">
-                {% endif %}
-                <div class="card-body">
-                    <p class="card-text">{{ object.product_name|title }}</p>
-                    <p class="card-text">{{ object.description|truncatechars:100 }}</p>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div class="btn-group">
-                            <a type="button" class="btn btn-sm btn-outline-secondary"
-                               href="{% url 'catalog:product' object.pk %}">View</a>
-                            <a type="button" class="btn btn-sm btn-outline-secondary"
-                               href="{% url 'catalog:product_update' object.pk %}">Edit</a>
-                            <a type="button" class="btn btn-sm btn-outline-secondary"
-                               href="{% url 'catalog:product_delete' object.pk %}">Delete</a>
+        {% if object.is_published %}
+            <div class="col">
+                <div class="card shadow-sm">
+                    {% if object.preview %}
+                        <img class="card-img-top"
+                             src="{{ object.preview|mediapath }}"
+                             alt="Card image cap">
+                    {% endif %}
+                    <div class="card-body">
+                        <p class="card-text">{{ object.product_name|title }}</p>
+                        <p class="card-text">{{ object.description|truncatechars:100 }}</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="btn-group">
+                                <a type="button" class="btn btn-sm btn-outline-secondary"
+                                   href="{% url 'catalog:product' object.pk %}">View</a>
+                                <a type="button" class="btn btn-sm btn-outline-secondary"
+                                   href="{% url 'catalog:product_update' object.pk %}">Edit</a>
+                                <a type="button" class="btn btn-sm btn-outline-secondary"
+                                   href="{% url 'catalog:product_delete' object.pk %}">Delete</a>
+                            </div>
+                            <small class="text-body-secondary">${{ object.unit_price }}</small>
                         </div>
-                        <small class="text-body-secondary">${{ object.unit_price }}</small>
                     </div>
                 </div>
             </div>
-        </div>
+        {% endif %}
     {% endfor %}
 
     <nav class="pagenav my-15">
