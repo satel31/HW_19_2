@@ -11,7 +11,7 @@ def send_email(title: str) -> None:
         'New achievement!',
         f'Congratulations! You article {title} has got 100 views!',
         settings.EMAIL_HOST_USER,
-        ['blokhnina.tatiana@yandex.ru']
+        ['test3112django@yandex.ru']
     )
 def get_categories_cache():
     if settings.CACHE_ENABLED:
