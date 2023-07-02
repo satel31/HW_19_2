@@ -1,4 +1,4 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin, PermissionRequiredMixin
 from django.forms import inlineformset_factory
 from django.shortcuts import get_object_or_404, redirect
 
@@ -54,6 +54,11 @@ class ProductByPageListView(ListView):
         'title': 'All products'
     }
 
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        queryset = queryset.filter(is_published=True)
+        return queryset
+
 
 class ProductDetailView(DetailView):
     model = Product
@@ -64,9 +69,12 @@ class ProductDetailView(DetailView):
         return context_data
 
 
-class ProductUpdateView(LoginRequiredMixin, UpdateView):
+class ProductUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Product
     form_class = ProductForm
+
+    def test_func(self):
+        return self.request.user == self.get_object().owner
 
     def get_context_data(self, **kwargs):
         context_data = super().get_context_data(**kwargs)
@@ -90,14 +98,18 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
         return reverse_lazy('catalog:product', kwargs={'pk': self.kwargs['pk']})
 
 
-class ProductDeleteView(LoginRequiredMixin, DeleteView):
+class ProductDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Product
     success_url = reverse_lazy('catalog:products')
 
+    def test_func(self):
+        return self.request.user == self.get_object().owner
 
-class PostCreateView(CreateView):
+
+class PostCreateView(PermissionRequiredMixin, CreateView):
     model = Post
     fields = ('post_title', 'text', 'preview')
+    permission_required = 'catalog.add_post'
     success_url = reverse_lazy('catalog:blog')
 
 
@@ -131,16 +143,18 @@ class PostDetailView(DetailView):
         return object
 
 
-class PostUpdateView(UpdateView):
+class PostUpdateView(PermissionRequiredMixin, UpdateView):
     model = Post
     fields = ('post_title', 'text', 'slug', 'preview')
+    permission_required = 'catalog.change_post'
 
     def get_success_url(self):
         return reverse_lazy('catalog:post', kwargs={'pk': self.kwargs['pk']})
 
 
-class PostDeleteView(DeleteView):
+class PostDeleteView(PermissionRequiredMixin, DeleteView):
     model = Post
+    permission_required = 'catalog.delete_post'
     success_url = reverse_lazy('catalog:blog')
 
 

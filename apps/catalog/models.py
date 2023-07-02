@@ -15,6 +15,7 @@ class Product(models.Model):
     creation_date = models.DateTimeField(auto_now_add=True, verbose_name='Creation Date')
     last_modified = models.DateTimeField(auto_now=True, verbose_name='Last Modified')
     owner = models.ForeignKey(User, on_delete=models.SET_NULL, **NULLABLE)
+    is_published = models.BooleanField(default=False, verbose_name='Published')
 
     @property
     def active_version(self):
