@@ -20,6 +20,8 @@ from dotenv import load_dotenv
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+load_dotenv(BASE_DIR / '.env')
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
@@ -84,12 +86,11 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-load_dotenv()
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'hw_20_1',
+        'NAME': os.getenv('name'),
         'USER': 'postgres',
         'PASSWORD': os.getenv('password'),
     }
@@ -141,10 +142,10 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 EMAIL_HOST = 'smtp.yandex.ru'
-EMAIL_HOST_USER = 'blokhnina.tatiana@yandex.ru'
+EMAIL_HOST_USER = os.getenv('email')
 EMAIL_PORT = 465
 #In case of error copy password from .env. It helps.
-EMAIL_HOST_PASSWORD = os.getenv('password_yandex')
+EMAIL_HOST_PASSWORD = os.getenv('password')
 EMAIL_USE_TLS = False
 EMAIL_USE_SSL = True
 
@@ -156,11 +157,11 @@ LOGOUT_REDIRECT_URL = '/'
 LOGIN_URL = '/'
 
 #Cache settings
-CACHE_ENABLED = True
+CACHE_ENABLED = os.getenv('cache_enabled')
 if CACHE_ENABLED:
     CACHES = {
         'default':{
             "BACKEND": "django.core.cache.backends.redis.RedisCache",
-            "LOCATION": 'redis://127.0.0.1:6379',
+            "LOCATION": os.getenv('location'),
         }
     }
