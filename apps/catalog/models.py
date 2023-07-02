@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.text import slugify
-from apps.catalog.services import transliterate
+
+from apps.catalog.services_transliteration import transliterate
 from apps.users.models import User
 
 NULLABLE = {'blank': True, 'null': True}
