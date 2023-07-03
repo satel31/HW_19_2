@@ -20,11 +20,13 @@ from dotenv import load_dotenv
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+load_dotenv(BASE_DIR / '.env')
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure--v+bytx-f=km$!f#3e1%$*_pk5%ma)_e^(e-55&no5qu43zwo#'
+SECRET_KEY = os.getenv('secret_key')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -52,6 +54,7 @@ USER_APPS = [
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + USER_APPS
 
 MIDDLEWARE = [
+    'django.middleware.cache.UpdateCacheMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -59,6 +62,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.cache.FetchFromCacheMiddleware',
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -84,14 +88,13 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-load_dotenv()
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'hw_20_1',
+        'NAME': os.getenv('name'),
         'USER': 'postgres',
-        'PASSWORD': os.getenv('password'),
+        'PASSWORD': os.getenv('password_db'),
     }
 }
 
@@ -141,10 +144,10 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 EMAIL_HOST = 'smtp.yandex.ru'
-EMAIL_HOST_USER = 'blokhnina.tatiana@yandex.ru'
+EMAIL_HOST_USER = os.getenv('email')
 EMAIL_PORT = 465
 #In case of error copy password from .env. It helps.
-EMAIL_HOST_PASSWORD = os.getenv('password_yandex')
+EMAIL_HOST_PASSWORD = os.getenv('password')
 EMAIL_USE_TLS = False
 EMAIL_USE_SSL = True
 
@@ -154,3 +157,13 @@ AUTH_USER_MODEL = 'users.User'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 LOGIN_URL = '/'
+
+#Cache settings
+CACHE_ENABLED = os.getenv('cache_enabled')
+if CACHE_ENABLED:
+    CACHES = {
+        'default':{
+            "BACKEND": "django.core.cache.backends.redis.RedisCache",
+            "LOCATION": os.getenv('location'),
+        }
+    }

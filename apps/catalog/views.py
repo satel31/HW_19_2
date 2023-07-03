@@ -6,7 +6,7 @@ from apps.catalog.forms import ProductForm, VersionForm
 from apps.catalog.models import Product, Post, Version
 from django.views.generic import ListView, CreateView, UpdateView, DetailView, DeleteView
 from django.urls import reverse_lazy, reverse
-from apps.catalog.services import send_email
+from apps.catalog.services import send_email, get_categories_cache
 
 
 class ProductCreateView(LoginRequiredMixin, CreateView):
@@ -42,7 +42,8 @@ class ProductCreateView(LoginRequiredMixin, CreateView):
 class ProductListView(ListView):
     model = Product
     extra_context = {
-        'title': 'Products'
+        'title': 'Products',
+        'categories': get_categories_cache(),
     }
 
 

@@ -8,6 +8,7 @@ packages = [{ include = "hw_19_2" }]
 
 [tool.poetry.dependencies]
 python = "^3.11"
+redis = "^4.6.0"
 
 
 [tool.poetry.group.dev.dependencies]

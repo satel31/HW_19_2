@@ -11,7 +11,7 @@ def send_email(code: str, user_email: str, id) -> None:
         [user_email]
     )
 
-def send_email_pswrd(password: str, user_email:str) -> None:
+def send_email_pswrd(password: str, user_email: str) -> None:
     """Sends an email with congratulations"""
     send_mail(
         'Your new password',
